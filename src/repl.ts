@@ -1,4 +1,5 @@
 import { createInterface } from "readline";
+import { getCommands } from "./command.js";
 
 export function startREPL() {
   const rl = createInterface({
@@ -17,7 +18,13 @@ export function startREPL() {
     }
 
     const commandName = words[0];
-    console.log(`Your command was: ${commandName}`);
+    const commands = getCommands();
+    for (let commandKey in commands) {
+      if (commandName === commandKey) {
+        commands[commandKey].callback(commands);
+        break;
+      }
+    }
     rl.prompt();
   });
 }
